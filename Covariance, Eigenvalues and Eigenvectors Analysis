@@ -1,0 +1,29 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = np.array([
+    [2, 4],
+    [4, 6],
+    [6, 8],
+    [8, 10],
+    [10, 12]
+])
+
+df = pd.DataFrame(data, columns=["X", "Y"])
+
+print("Dataset:\n", df)
+
+cov = np.cov(data.T)
+print("\nCovariance Matrix:\n", cov)
+
+values, vectors = np.linalg.eig(cov)
+
+print("\nEigenvalues:\n", values)
+print("\nEigenvectors:\n", vectors)
+
+plt.scatter(data[:, 0], data[:, 1])
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Covariance Analysis")
+plt.show()

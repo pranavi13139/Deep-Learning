@@ -1,0 +1,29 @@
+import numpy as np
+
+np.random.seed(42)
+
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
+
+W1 = np.random.randn(2, 4)
+W2 = np.random.randn(4, 1)
+
+lr = 0.5
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+for epoch in range(10000):
+    H = sigmoid(X @ W1)
+    O = sigmoid(H @ W2)
+
+    error = y - O
+
+    dO = error * O * (1 - O)
+    dH = (dO @ W2.T) * H * (1 - H)
+
+    W2 += lr * H.T @ dO
+    W1 += lr * X.T @ dH
+
+print("Predictions:")
+print(np.round(O, 3))

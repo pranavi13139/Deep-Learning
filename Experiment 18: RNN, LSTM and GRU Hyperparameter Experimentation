@@ -1,0 +1,30 @@
+import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import SimpleRNN, LSTM, GRU, Dense
+
+X = np.random.rand(500, 10, 1)
+y = np.random.randint(0, 2, 500)
+
+layers = {
+    "RNN": SimpleRNN,
+    "LSTM": LSTM,
+    "GRU": GRU
+}
+
+for name, layer in layers.items():
+    model = Sequential([
+        layer(16, input_shape=(10, 1)),
+        Dense(1, activation="sigmoid")
+    ])
+
+    model.compile(
+        optimizer="adam",
+        loss="binary_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    model.fit(X, y, epochs=5, verbose=0)
+
+    loss, accuracy = model.evaluate(X, y, verbose=0)
+
+    print(name, "Accuracy:", round(accuracy, 4))

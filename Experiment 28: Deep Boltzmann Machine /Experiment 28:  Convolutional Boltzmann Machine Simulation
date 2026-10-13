@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+visible_units = 6
+hidden1_units = 4
+hidden2_units = 2
+
+W1 = np.random.randn(visible_units, hidden1_units) * 0.1
+W2 = np.random.randn(hidden1_units, hidden2_units) * 0.1
+
+visible = np.random.randint(0, 2, visible_units).astype(float)
+
+h1_prob = sigmoid(visible @ W1)
+h1 = (np.random.rand(hidden1_units) < h1_prob).astype(float)
+
+h2_prob = sigmoid(h1 @ W2)
+h2 = (np.random.rand(hidden2_units) < h2_prob).astype(float)
+
+print("Visible Layer:", visible)
+print("Hidden Layer 1:", h1)
+print("Hidden Layer 2:", h2)
+
+plt.bar(range(hidden2_units), h2)
+plt.xlabel("Hidden Unit")
+plt.ylabel("Activation")
+plt.title("Two-Layer Stochastic Model")
+plt.show()

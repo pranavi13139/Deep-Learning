@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+W = np.random.randn(4, 2) * 0.1
+vb = np.zeros(4)
+hb = np.zeros(2)
+
+visible = np.random.randint(0, 2, (100, 4))
+
+losses = []
+
+for epoch in range(100):
+    h_prob = sigmoid(visible @ W + hb)
+    h_sample = (np.random.rand(*h_prob.shape) < h_prob).astype(float)
+
+    v_prob = sigmoid(h_sample @ W.T + vb)
+    v_sample = (np.random.rand(*v_prob.shape) < v_prob).astype(float)
+
+    h_prob_reconstructed = sigmoid(v_sample @ W + hb)
+
+    W += 0.01 * (
+        visible.T @ h_prob -
+        v_sample.T @ h_prob_reconstructed
+    ) / len(visible)
+
+    vb += 0.01 * np.mean(visible - v_sample, axis=0)
+    hb += 0.01 * np.mean(h_prob - h_prob_reconstructed, axis=0)
+
+    losses.append(np.mean((visible - v_prob) ** 2))
+
+plt.plot(losses)
+plt.xlabel("Epoch")
+plt.ylabel("Reconstruction Error")
+plt.title("Contrastive Divergence")
+plt.show()

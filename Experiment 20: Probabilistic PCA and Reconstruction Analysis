@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+X = load_iris().data
+X = StandardScaler().fit_transform(X)
+
+for components in [1, 2, 3]:
+    pca = PCA(n_components=components)
+
+    reduced = pca.fit_transform(X)
+    reconstructed = pca.inverse_transform(reduced)
+
+    error = np.mean((X - reconstructed) ** 2)
+
+    print("Components:", components)
+    print("Reconstruction MSE:", round(error, 4))

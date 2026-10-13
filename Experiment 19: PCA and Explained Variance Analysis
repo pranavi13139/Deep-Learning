@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+
+data = load_iris()
+
+X = StandardScaler().fit_transform(data.data)
+
+pca = PCA()
+X_pca = pca.fit_transform(X)
+
+print("Explained Variance Ratio:")
+print(pca.explained_variance_ratio_)
+
+print("Cumulative Variance:")
+print(np.cumsum(pca.explained_variance_ratio_))
+
+plt.plot(
+    range(1, 5),
+    np.cumsum(pca.explained_variance_ratio_),
+    marker="o"
+)
+
+plt.xlabel("Number of Components")
+plt.ylabel("Cumulative Explained Variance")
+plt.title("PCA Analysis")
+plt.show()

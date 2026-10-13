@@ -1,0 +1,27 @@
+import numpy as np
+from sklearn.neural_network import BernoulliRBM
+
+X = np.array([
+    [1, 1, 0, 0],
+    [1, 0, 1, 0],
+    [0, 1, 0, 1],
+    [0, 0, 1, 1],
+    [1, 1, 1, 0]
+])
+
+rbm = BernoulliRBM(
+    n_components=2,
+    learning_rate=0.05,
+    n_iter=100,
+    random_state=42
+)
+
+rbm.fit(X)
+
+hidden = rbm.transform(X)
+reconstructed = rbm.gibbs(X)
+
+print("Hidden Representation:\n", hidden)
+print("Reconstruction:\n", reconstructed)
+print("Reconstruction Error:",
+      np.mean((X - reconstructed) ** 2))

@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+
+np.random.seed(42)
+
+# Original data
+real = np.random.normal(0, 1, 1000)
+
+# Simulated generated outputs
+gan_output = np.random.normal(0, 1, 1000)
+vae_output = np.random.normal(0.1, 0.9, 1000)
+
+def evaluate(real, generated, name):
+    mse = mean_squared_error(real, generated)
+    print(name, "MSE:", round(mse, 4))
+
+evaluate(real, gan_output, "GAN")
+evaluate(real, vae_output, "VAE")
+
+plt.hist(real, bins=30, alpha=0.5, label="Real")
+plt.hist(gan_output, bins=30, alpha=0.5, label="GAN")
+plt.hist(vae_output, bins=30, alpha=0.5, label="VAE")
+
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.title("Generative Model Output Comparison")
+plt.legend()
+plt.show()
